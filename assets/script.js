@@ -13,14 +13,13 @@ function initPage() {
     var todayweatherEl = document.getElementById("today-weather");
     let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
-
     const APIKey = "84b79da5e5d7c92085660485702f4ce8";
 
     function getWeather(cityName) {
-
         let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
         axios.get(queryURL)
             .then(function(response) {
+
                 todayweatherEl.classList.remove("d-none");
 
                 const currentDate = new Date(response.data.dt * 1000);
@@ -43,10 +42,8 @@ function initPage() {
                         let UVIndex = document.createElement("span");
 
                         if (response.data[0].value < 4) {
-                            UVIndex,
-                            setAttribute("class", "badge bage-success");
-                        }
-                        else if (response.data[0].value < 8) {
+                            UVIndex.setAttribute("class", "badge badge-success");
+                        } else if (response.data[0].value < 8) {
                             UVIndex.setAttribute("class", "badge badge-warning");
                         } else {
                             UVIndex.setAttribute("class", "badge badge-danger");
@@ -54,7 +51,9 @@ function initPage() {
                         console.log(response.data[0].value)
                         UVIndex.innerHTML = response.data[0].value;
                         currentUVEl.innerHTML = "UV Index: ";
+                        currentUVEl.append(UVIndex);
                     });
+
                 let cityID = response.data.id;
                 let forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey;
                 axios.get(forecastQueryURL)
@@ -126,6 +125,7 @@ function initPage() {
     if (searchHistory.length > 0) {
         getWeather(searchHistory[searchHistory.length - 1]);
     }
+
 }
 
 initPage();
